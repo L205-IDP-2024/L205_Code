@@ -35,8 +35,6 @@ void lineFollow(int valLeft, int valRight) {
         rightMotor->setSpeed(0);
         leftMotor->setSpeed(125);
         leftMotor->run(FORWARD);
-
-
     }
     if (valLeft == 0 && valRight == 0) {
         Serial.println("AHHH");
@@ -67,9 +65,8 @@ void setup() {
     pinMode(rightlinesensorPin, INPUT);
     pinMode(buttonPin, INPUT); // declare pushbutton as input
 
-
     if (!AFMS.begin()) {         // create with the default frequency 1.6KHz
-        // if (!AFMS.begin(1000)) {  // OR with a different frequency, say 1KHz
+        /// if (!AFMS.begin(1000)) {  // OR with a different frequency, say 1KHz
         Serial.println("Could not find Motor Shield. Check wiring.");
         while (1);
     }
@@ -138,7 +135,5 @@ void loop() {
                 Serial.print(valRight);
             }
         }
-
-
     }
 }

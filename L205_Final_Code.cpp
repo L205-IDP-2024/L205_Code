@@ -45,7 +45,7 @@ int extraarmup = 15;
 int pos_stringoffset = 0;
 int lowarm = 20; //when attemting to pickup
 int higharm = 90; // max lift
-int midarm = 30; // dropping off
+int midarm = 60; // dropping off
 int tightstring = 190; //picking up block
 int midstring = tightstring - higharm + lowarm; //keeping block as the arm goes up
 int loosestring = 0; //loose with arm up
@@ -246,6 +246,15 @@ void blockDeposit() {
     leftMotor->setSpeed(0);
     rightMotor->setSpeed(0);
 
+    //Arm down
+    for (pos_arm = higharm + extraarmup; pos_arm >= midarm; pos_arm -= 1) {
+        stringServo.write(midstring - pos_arm + higharm + pos_stringoffset);
+        armServo.write(pos_arm);
+        Serial.print(pos_arm);
+        delay(45); // waits for the servo to reach the position
+        movearmdown = 1;
+    }
+  
     //String loosen
     Serial.print("string release");
     for (pos_string = (midstring - midarm + higharm); pos_string >= (higharm - midarm); pos_string -= 1) {
@@ -455,21 +464,6 @@ void loop() {
         turnCounter = turnCounter + 1;
       }
 
-      // Move arm down in run up to depositing
-      if (((nextTurn == 'D') || (nextTurn == 'G')) && (movearmdown != 1)) {
-          leftMotor->setSpeed(0);
-          rightMotor->setSpeed(0);
-          //Arm down
-          Serial.print("Lowering arm");
-          for (pos_arm = higharm + extraarmup; pos_arm >= midarm; pos_arm -= 1) {
-              stringServo.write(midstring - pos_arm + higharm + pos_stringoffset);
-              armServo.write(pos_arm);
-              Serial.print(pos_arm);
-              delay(45); // waits for the servo to reach the position
-              movearmdown = 1;
-          }
-      }
-
       // Deposit at RED (Colour determines the spin direction)
       if (nextTurn == 'D' && crashSensor == LOW){
         blockDeposit();
@@ -513,7 +507,7 @@ void loop() {
       }
      
       // Stopinbox turn
-      if ((nextTurn == 'F') && (Distance < 10)){
+      while ((nextTurn == 'F') && (Distance < 10)){
           Stop();
           digitalWrite(blueLEDPin, LOW);
         }

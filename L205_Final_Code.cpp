@@ -66,7 +66,7 @@ int i = 0;
 
 // All the different paths that may the robot may be required to take
 // R - Right, L - Left, S - Straight, U - Pickup block, D - Deposit block at RED, G - Deposit block at GREEN, F - Finish in box, E - End of array
-char FBFS[] = {'R', 'U', 'E'};
+char FBFS[] = {'S', 'L', 'R', 'U', 'E'};
 char FBTR[] = {'L', 'S', 'R', 'D', 'E'};
 char FBTG[] = {'R', 'L', 'G', 'E'};
 char SBFR[] = {'S', 'L', 'L', 'U', 'E'};
@@ -85,7 +85,7 @@ char EFR[] = {'L', 'L', 'S', 'F', 'E'};
 char EFG[] = {'R', 'S', 'R', 'S', 'F', 'E'};        
 
 // A copy of the paths so we are able to compare arrays
-char ZFBFS[] = {'R', 'U', 'E'};  
+char ZFBFS[] = {'S', 'L', 'R', 'U', 'E'};  
 char ZFBTR[] = {'L', 'S', 'R', 'D', 'E'};
 char ZFBTG[] = {'R', 'L', 'G', 'E'};
 char ZSBFR[] = {'S', 'L', 'L', 'U', 'E'};
@@ -214,11 +214,9 @@ void blockPickup() {
 
     if (digitalRead(IR) == 1){
         digitalWrite(redLEDPin, HIGH);
-        red = 1;
         }
     if (digitalRead(IR) == 0){
         digitalWrite(greenLEDPin, HIGH);
-        green = 1;
         }
 
     //String tighten
@@ -557,7 +555,7 @@ void loop() {
       Serial.println("Colour: RED");
       break;
     }
-    if (((compare(turn_List, TBFR)== 1)||(compare(turn_List, TBFG) == 1)) && (digitalRead(IR) == 0)){
+    if (((compare(turn_List, TBFR) == 1)||(compare(turn_List, TBFG) == 1)) && (digitalRead(IR) == 0)){
       turn_List = ZTBTG;
       Serial.println("Colour: BLACK ");
       break;
@@ -570,7 +568,7 @@ void loop() {
       turn_List = ZFFBFG;
       break;
     }
-    if (((compare(turn_List, FFBFR)== 1)||(compare(turn_List, FFBFG)== 1)) && (digitalRead(IR) == 1)){
+    if (((compare(turn_List, FFBFR) == 1)||(compare(turn_List, FFBFG)== 1)) && (digitalRead(IR) == 1)){
       turn_List = ZFFBTR;
       Serial.println("Colour: RED");
       break;
@@ -589,7 +587,6 @@ void loop() {
       break;
     }
   }
-
 
   turnCounter = 0;
   digitalWrite(redLEDPin, LOW);
